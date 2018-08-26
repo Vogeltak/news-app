@@ -10,7 +10,7 @@ import android.view.View;
 
 import org.maxcrone.news.articles.ArticleContent;
 
-public class Overview extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
+public class ActivityOverview extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
     public static final String EXTRA_MESSAGE = "org.maxcrone.news.article";
 
     @Override
@@ -27,7 +27,7 @@ public class Overview extends AppCompatActivity implements ItemFragment.OnListFr
 
     /* Called when the user taps an article */
     public void openArticle(View view) {
-        Intent articleIntent = new Intent(this, Article.class);
+        Intent articleIntent = new Intent(this, ActivityArticle.class);
 
         // Only use window transitions if Android version is sufficiently high
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -45,7 +45,7 @@ public class Overview extends AppCompatActivity implements ItemFragment.OnListFr
 
     @Override
     public void onListFragmentInteraction(ArticleContent.NewsArticle item) {
-        Intent articleIntent = new Intent(this, Article.class);
+        Intent articleIntent = new Intent(this, ActivityArticle.class);
         startActivity(articleIntent);
     }
 }
