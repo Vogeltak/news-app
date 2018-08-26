@@ -23,7 +23,7 @@ public class ArticleContent {
      */
     public static final Map<String, NewsArticle> ITEM_MAP = new HashMap<String, NewsArticle>();
 
-    private static final int COUNT = 25;
+    private static final int COUNT = 8;
 
     static {
         // Add some sample items.
@@ -38,7 +38,13 @@ public class ArticleContent {
     }
 
     private static NewsArticle createDummyItem(int position) {
-        return new NewsArticle(String.valueOf(position), "Smoesje " + position, makeDetails(position));
+        String title = "Impeach Trump: why Republicans, not Democrats are talking up the prospect";
+        String date = "August 26, 2018";
+        String src = "The Guardian";
+        String text = "By one count the president has nine impeachable offenses to his name but the politics of removing him from office are complicated\n" +
+                "\n" +
+                "Donald Trump and the Republicans want to talk about his impeachment and removal from office. Democrats would really rather not.";
+        return new NewsArticle(String.valueOf(position), title, date, src, text);
     }
 
     private static String makeDetails(int position) {
@@ -50,23 +56,25 @@ public class ArticleContent {
         return builder.toString();
     }
 
-    /**
-     * A dummy item representing a piece of content.
-     */
     public static class NewsArticle {
         public final String id;
-        public final String content;
-        public final String details;
+        public final String title;
+        public final String date;
+        public final String newsSource;
+        public final String text;
 
-        public NewsArticle(String id, String content, String details) {
+        public NewsArticle(String id, String title, String date, String newsSource, String text) {
             this.id = id;
-            this.content = content;
-            this.details = details;
+            this.title = title;
+            this.date = date;
+            this.newsSource = newsSource;
+            this.text = text;
         }
 
         @Override
         public String toString() {
-            return content;
+            String str = this.title + " - " + this.newsSource;
+            return str;
         }
     }
 }
