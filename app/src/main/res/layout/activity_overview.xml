@@ -10,15 +10,14 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/NewsToolbar"
-        android:elevation="0dp">
+        android:theme="@style/NewsToolbar">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/newsToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextAppearance="@style/ToolbarTextAppearance.Title"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:layout_scrollFlags="scroll|enterAlways|snap">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -86,20 +85,12 @@
             android:textColor="@color/colorTextDisabled"
             android:textSize="14sp" />
     </LinearLayout-->
-
-    <LinearLayout
-        android:layout_width="fill_parent"
+    
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/newsRecyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <fragment
-            android:id="@+id/headlines_fragment"
-            android:name="org.maxcrone.news.ItemFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     
 </android.support.design.widget.CoordinatorLayout>
