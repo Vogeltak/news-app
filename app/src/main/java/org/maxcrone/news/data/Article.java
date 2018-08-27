@@ -40,7 +40,7 @@ public class Article {
         return url;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 }
