@@ -2,6 +2,7 @@ package org.maxcrone.news.activities;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,10 +10,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import org.maxcrone.news.adapters.NewsListAdapter;
 import org.maxcrone.news.R;
+import org.maxcrone.news.data.Article;
+import org.maxcrone.news.network.NewsApi;
 
 public class ActivityOverview extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "org.maxcrone.news.article";
@@ -43,12 +49,19 @@ public class ActivityOverview extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // Initialize an adapter
-        mAdapter = new NewsListAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+        // Retrieve all articles from the api call
+        Article[] data = NewsApi.get();
+
+        // Only if there are articles to show, we set an adapter
+        // Otherwise we have to display a message to the user notifying it of the empty list of articles
+        if (data.length >= 1) {
+            // Initialize an adapter
+            mAdapter = new NewsListAdapter(data);
+            mRecyclerView.setAdapter(mAdapter);
+        }
 
         // Initialize divider item decoration
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), 1);
+        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), 1);
         //mRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
@@ -67,6 +80,31 @@ public class ActivityOverview extends AppCompatActivity {
             startActivity(articleIntent, options.toBundle());
         } else {
             startActivity(articleIntent);
+        }
+    }
+
+    /*
+     * Class to deal with the API call asynchronously
+     */
+    private class ApiTask extends AsyncTask<Void, Void, Article[]> {
+        @Override
+        protected void onPreExecute() {
+            // Instantiate progress bar while async task is executing in background
+            ViewGroup root = findViewById(R.id.overviewRootLayout);
+            View view = LayoutInflater.from(ActivityOverview.this).inflate(R.layout.progress_bar_news_list, root);
+        }
+
+        @Override
+        protected Article[] doInBackground(Void... voids) {
+            return new Article[0];
+        }
+
+        @Override
+        protected void onPostExecute(Article[] result) {
+            // Remove progress bar after async task has finished
+            ViewGroup root = findViewById(R.id.overviewRootLayout);
+            ProgressBar p = findViewById(R.id.newsListProgressBar);
+            root.removeView(p);
         }
     }
 }

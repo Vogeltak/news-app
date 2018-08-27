@@ -8,22 +8,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.maxcrone.news.R;
+import org.maxcrone.news.data.Article;
+import org.maxcrone.news.network.NewsApi;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
-    private String[] mDataset;
+    private Article[] mDataset;
 
-    public NewsListAdapter() {
-        mDataset = new String[10];
-        mDataset[0] = "Impeach Trump: why Republicans, not Democrats are talking up the prospect";
-        mDataset[1] = "Sex, lies and tabloids: hush payments to women that spell danger for Trump";
-        mDataset[2] = "Tokyo fears losing a part of its soul as world’s biggest fish market moves";
-        mDataset[3] = "Pope in Ireland: Francis Meets Church Abuse Victims";
-        mDataset[4] = "An N.Y.U. Sexual-Harassment Case Has Spurred a Necessary Conversation About #MeToo";
-        mDataset[5] = "Impeach Trump: why Republicans, not Democrats are talking up the prospect";
-        mDataset[6] = "Sex, lies and tabloids: hush payments to women that spell danger for Trump";
-        mDataset[7] = "Tokyo fears losing a part of its soul as world’s biggest fish market moves";
-        mDataset[8] = "Pope in Ireland: Francis Meets Church Abuse Victims";
-        mDataset[9] = "An N.Y.U. Sexual-Harassment Case Has Spurred a Necessary Conversation About #MeToo";
+    public NewsListAdapter(Article[] data) {
+        mDataset = data;
     }
 
     @NonNull
@@ -41,8 +33,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     /* Replace the contents of a view (invoked by layout manager) */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.mTitle.setText(mDataset[i]);
-        viewHolder.mSrc.setText("The Guardian");
+        viewHolder.mTitle.setText(mDataset[i].getTitle());
+        viewHolder.mSrc.setText(mDataset[i].getSrc());
         //viewHolder.mDate.setText("August 26, 2018");
     }
 
