@@ -20,8 +20,10 @@ import org.maxcrone.news.R;
 import org.maxcrone.news.data.Article;
 import org.maxcrone.news.network.NewsApi;
 
+import java.util.Arrays;
+
 public class ActivityOverview extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "org.maxcrone.news.article";
+    public static final String ARTICLE_OBJECT = "org.maxcrone.news.article";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -67,6 +69,9 @@ public class ActivityOverview extends AppCompatActivity {
         // Only if there are articles to show, we set an adapter
         // Otherwise we have to display a message to the user notifying it of the empty list of articles
         if (data.length >= 1) {
+            // Sort the list of articles by date (most recent first)
+            Arrays.sort(data);
+
             // Initialize an adapter
             mAdapter = new NewsListAdapter(data);
             mRecyclerView.setAdapter(mAdapter);

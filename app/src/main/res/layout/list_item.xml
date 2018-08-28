@@ -10,7 +10,6 @@
         android:paddingBottom="8dp"
         android:clickable="true"
         android:focusable="true"
-        android:onClick="openArticle"
         android:orientation="vertical">
 
         <TextView

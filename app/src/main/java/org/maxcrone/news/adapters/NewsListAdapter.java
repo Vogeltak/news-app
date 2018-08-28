@@ -1,5 +1,9 @@
 package org.maxcrone.news.adapters;
 
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.maxcrone.news.R;
+import org.maxcrone.news.activities.ActivityArticle;
+import org.maxcrone.news.activities.ActivityOverview;
 import org.maxcrone.news.data.Article;
-import org.maxcrone.news.network.NewsApi;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
     private Article[] mDataset;
@@ -36,6 +41,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         viewHolder.mTitle.setText(mDataset[i].getTitle());
         viewHolder.mSrc.setText(mDataset[i].getSrc());
         //viewHolder.mDate.setText("August 26, 2018");
+
+        // Add the respective Article object to the ViewHolder
+        viewHolder.mArticle = mDataset[i];
     }
 
     @Override
@@ -43,11 +51,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         return mDataset.length;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View mView;
         public TextView mTitle;
         public TextView mSrc;
         //public TextView mDate;
+
+        public Article mArticle;
 
         public ViewHolder(View v) {
             super(v);
@@ -55,6 +65,18 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             mTitle = mView.findViewById(R.id.articleTitle);
             mSrc = mView.findViewById(R.id.articleSource);
             //mDate = mView.findViewById(R.id.articleDate);
+
+            // Install onclicklistener
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Context viewContext = v.getContext();
+            Intent articleIntent = new Intent(viewContext, ActivityArticle.class);
+            articleIntent.putExtra(ActivityOverview.ARTICLE_OBJECT, mArticle);
+
+            viewContext.startActivity(articleIntent);
         }
     }
 }
