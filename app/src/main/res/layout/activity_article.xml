@@ -20,6 +20,24 @@
             android:elevation="0dp"
             android:theme="@style/NewsToolbar"
             app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <!--ImageButton
+                android:id="@+id/shareButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_margin"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_share_24dp"
+                style="?android:attr/borderlessButtonStyle"/-->
+
+            <!--ImageButton
+                android:id="@+id/browserButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/text_margin"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_open_in_browser_24dp"/-->
+
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
