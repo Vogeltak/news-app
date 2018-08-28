@@ -50,7 +50,19 @@ public class ActivityOverview extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Retrieve all articles from the api call
-        Article[] data = NewsApi.get();
+        Article[] data;
+
+        // Asynchronously retrieve the article list on another thread
+        try {
+            data = new ApiTask()
+                    .execute()
+                    .get();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+
+            // Set data to a standard empty value if something went wrong
+            data = new Article[0];
+        }
 
         // Only if there are articles to show, we set an adapter
         // Otherwise we have to display a message to the user notifying it of the empty list of articles
@@ -96,7 +108,7 @@ public class ActivityOverview extends AppCompatActivity {
 
         @Override
         protected Article[] doInBackground(Void... voids) {
-            return new Article[0];
+            return NewsApi.get();
         }
 
         @Override
