@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,11 +31,13 @@ import java.util.Arrays;
 
 import okhttp3.Cache;
 
-public class ActivityOverview extends AppCompatActivity {
+public class ActivityOverview extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     public static final String ARTICLE_OBJECT = "org.maxcrone.news.article";
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private NewsListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private NewsApi newsApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +62,28 @@ public class ActivityOverview extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        // Initialize with an empty adapter
+        mAdapter = new NewsListAdapter(new Article[0]);
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Initialize the Swipe Refresh Layout
+        mSwipeRefreshLayout = findViewById(R.id.swipeRefreshContainer);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        // Initialize divider item decoration
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), 1);
+        mRecyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         // Retrieve all articles from the api call
-        NewsApi api = new NewsApi(this);
-        Article[] data = api.get();
+        newsApi = new NewsApi(this);
+        Article[] data = newsApi.get();
 
         // Only if there are articles to show, we set an adapter
         // Otherwise we have to display a message to the user notifying it of the empty list of articles
@@ -67,14 +91,9 @@ public class ActivityOverview extends AppCompatActivity {
             // Sort the list of articles by date (most recent first)
             Arrays.sort(data);
 
-            // Initialize an adapter
-            mAdapter = new NewsListAdapter(data);
-            mRecyclerView.setAdapter(mAdapter);
+            // Change dataset of the adapter
+            mAdapter.swap(data);
         }
-
-        // Initialize divider item decoration
-        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), 1);
-        //mRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     @Override
@@ -90,10 +109,26 @@ public class ActivityOverview extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             case R.id.appSettings:
                 return true;
+            case R.id.refreshArticles:
+                refreshArticleList();
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
     }
 
+    @Override
+    public void onRefresh() {
+        refreshArticleList();
+    }
 
+    public void refreshArticleList() {
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        CacheOperations.wipeCache(this);
+        Article[] data = newsApi.get();
+        Arrays.sort(data);
+        mAdapter.swap(data);
+
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
 }

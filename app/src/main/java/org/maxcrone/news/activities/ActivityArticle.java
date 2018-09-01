@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.maxcrone.news.R;
 import org.maxcrone.news.data.Article;
-import org.maxcrone.news.util.DateCalc;
+import org.maxcrone.news.util.TimeCalc;
 
 public class ActivityArticle extends AppCompatActivity {
     private Article article;
@@ -47,19 +47,10 @@ public class ActivityArticle extends AppCompatActivity {
         TextView ertView = findViewById(R.id.articleERT);
         TextView textView = findViewById(R.id.articleText);
 
-        // Calculate the estimated reading time
-        int nWords = 0;
-
-        if (!article.getText().isEmpty()) {
-            nWords = article.getText().split("\\s+").length;
-        }
-
-        int estimatedReadingTimeInMinutes = (int) (nWords / 150);
-
         // Insert all relevant texts
         sourceView.setText(article.getSrc());
         titleView.setText(article.getTitle());
-        ertView.setText(String.valueOf(estimatedReadingTimeInMinutes) + " minutes");
+        ertView.setText(TimeCalc.getEstimatedReadingTime(article.getText()) + " minutes");
         textView.setText(article.getText());
     }
 

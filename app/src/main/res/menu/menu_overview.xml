@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/refreshArticles"
+        app:showAsAction="never"
+        android:title="Refresh" />
+    <item
         android:id="@+id/appSettings"
         android:icon="@drawable/ic_settings_24dp"
         app:showAsAction="never"

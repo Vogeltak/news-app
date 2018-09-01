@@ -47,7 +47,8 @@
                 android:fontFamily="sans-serif"
                 android:textColor="@color/colorTextDisabled"
                 android:textSize="14sp"
-                android:transitionName="articleSource" />
+                android:transitionName="articleSource"
+                android:textIsSelectable="true"/>
 
             <TextView
                 android:id="@+id/articleTitle"
@@ -60,7 +61,8 @@
                 android:textColor="@color/colorText"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:transitionName="articleTitle" />
+                android:transitionName="articleTitle"
+                android:textIsSelectable="true"/>
 
             <TextView
                 android:id="@+id/articleERT"
@@ -70,7 +72,8 @@
                 android:fontFamily="sans-serif"
                 android:layout_gravity="center"
                 android:textColor="@color/colorTextDisabled"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textIsSelectable="true"/>
 
             <TextView
                 android:id="@+id/articleText"
@@ -79,7 +82,8 @@
                 android:layout_marginBottom="32dp"
                 android:textColor="@color/colorText"
                 android:textSize="18sp"
-                android:lineSpacingExtra="4dp"/>
+                android:lineSpacingExtra="4dp"
+                android:textIsSelectable="true"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -15,6 +15,7 @@ import org.maxcrone.news.R;
 import org.maxcrone.news.activities.ActivityArticle;
 import org.maxcrone.news.activities.ActivityOverview;
 import org.maxcrone.news.data.Article;
+import org.maxcrone.news.util.TimeCalc;
 
 public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHolder> {
     private Article[] mDataset;
@@ -38,8 +39,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
     /* Replace the contents of a view (invoked by layout manager) */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.mTitle.setText(mDataset[i].getTitle());
-        viewHolder.mSrc.setText(mDataset[i].getSrc());
+        Article a = mDataset[i];
+        viewHolder.mTitle.setText(a.getTitle());
+        viewHolder.mSrc.setText(a.getSrc());
+        viewHolder.mERT.setText(String.valueOf(TimeCalc.getEstimatedReadingTime(a.getText())) + " minutes");
         //viewHolder.mDate.setText("August 26, 2018");
 
         // Add the respective Article object to the ViewHolder
@@ -51,10 +54,20 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
         return mDataset.length;
     }
 
+    /*
+     * Option to replace all items in the RecyclerView
+     * In case of refreshing and retrieving all articles
+     */
+    public void swap(Article[] newDataset) {
+        this.mDataset = newDataset;
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public View mView;
         public TextView mTitle;
         public TextView mSrc;
+        public TextView mERT;
         //public TextView mDate;
 
         public Article mArticle;
@@ -64,6 +77,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<NewsListAdapter.ViewHo
             mView = v;
             mTitle = mView.findViewById(R.id.articleTitle);
             mSrc = mView.findViewById(R.id.articleSource);
+            mERT = mView.findViewById(R.id.articleERT);
             //mDate = mView.findViewById(R.id.articleDate);
 
             // Install onclicklistener
