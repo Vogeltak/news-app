@@ -21,8 +21,12 @@ import org.maxcrone.news.adapters.NewsListAdapter;
 import org.maxcrone.news.R;
 import org.maxcrone.news.data.Article;
 import org.maxcrone.news.network.NewsApi;
+import org.maxcrone.news.util.CacheOperations;
 
+import java.io.File;
 import java.util.Arrays;
+
+import okhttp3.Cache;
 
 public class ActivityOverview extends AppCompatActivity {
     public static final String ARTICLE_OBJECT = "org.maxcrone.news.article";
@@ -54,19 +58,8 @@ public class ActivityOverview extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Retrieve all articles from the api call
-        Article[] data;
-
-        // Asynchronously retrieve the article list on another thread
-        try {
-            data = new ApiTask()
-                    .execute()
-                    .get();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-
-            // Set data to a standard empty value if something went wrong
-            data = new Article[0];
-        }
+        NewsApi api = new NewsApi(this);
+        Article[] data = api.get();
 
         // Only if there are articles to show, we set an adapter
         // Otherwise we have to display a message to the user notifying it of the empty list of articles
@@ -102,28 +95,5 @@ public class ActivityOverview extends AppCompatActivity {
         }
     }
 
-    /*
-     * Class to deal with the API call asynchronously
-     */
-    private class ApiTask extends AsyncTask<Void, Void, Article[]> {
-        @Override
-        protected void onPreExecute() {
-            // Instantiate progress bar while async task is executing in background
-            ViewGroup root = findViewById(R.id.overviewRootLayout);
-            View view = LayoutInflater.from(ActivityOverview.this).inflate(R.layout.progress_bar_news_list, root);
-        }
 
-        @Override
-        protected Article[] doInBackground(Void... voids) {
-            return NewsApi.get();
-        }
-
-        @Override
-        protected void onPostExecute(Article[] result) {
-            // Remove progress bar after async task has finished
-            ViewGroup root = findViewById(R.id.overviewRootLayout);
-            ProgressBar p = findViewById(R.id.newsListProgressBar);
-            root.removeView(p);
-        }
-    }
 }

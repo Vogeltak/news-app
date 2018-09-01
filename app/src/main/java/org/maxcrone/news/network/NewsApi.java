@@ -1,38 +1,98 @@
 package org.maxcrone.news.network;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.maxcrone.news.R;
+import org.maxcrone.news.activities.ActivityOverview;
 import org.maxcrone.news.data.Article;
+import org.maxcrone.news.util.CacheOperations;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class NewsApi {
-    private static final String url = "http://news.dagdro.men/api/v1/articles";
-    private static OkHttpClient client = new OkHttpClient();
+    private final String url = "http://news.dagdro.men/api/v1/articles";
+    private OkHttpClient client = new OkHttpClient();
+    private Context context;
 
-    private NewsApi() {}
 
-    public static Article[] get() {
+    public NewsApi(Context context) {
+        this.context = context;
+    }
+
+    /*
+     * Retrieves the article data
+     * Checks if a cache already exists, otherwise it sends a web request to retrieve the data
+     * from the web api.
+     */
+    public Article[] get() {
+        Article[] data;
+
+        if (CacheOperations.cacheExists(context)) {
+            data = getArticlesFromCache();
+            System.out.println("[NEWS API] retrieving articles from cache");
+        } else {
+            try {
+                data = new ApiTask(this)
+                        .execute()
+                        .get();
+            } catch (Exception e) {
+                System.out.println(e.toString());
+
+                data = new Article[0];
+            }
+            System.out.println("[NEWS API] retrieving articles from web");
+        }
+
+        return data;
+    }
+
+    public Article[] getArticlesFromWeb() {
         Request req = new Request.Builder()
                 .url(url)
                 .build();
 
         try (Response res = client.newCall(req).execute()) {
-            return getArticlesFromResponse(res.body().string());
+            String jsonResponse = res.body().string();
+
+            // Cache the response
+            CacheOperations.createCache(context, jsonResponse);
+
+            return getArticlesFromResponse(jsonResponse);
         } catch (Exception e) {
             System.out.println(e);
         }
 
         return new Article[0];
+    }
+
+    private Article[] getArticlesFromCache() {
+        try {
+            String jsonResponse = CacheOperations.readCache(context);
+            Article[] articles = getArticlesFromResponse(jsonResponse);
+            return articles;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+
+            // Failed to read file, thus return empty array
+            return new Article[0];
+        }
     }
 
     private static Article[] getArticlesFromResponse(String response) throws JSONException {
@@ -68,5 +128,21 @@ public class NewsApi {
         }
 
         return articles;
+    }
+
+    /*
+     * Class to deal with the API call asynchronously
+     */
+    private class ApiTask extends AsyncTask<Void, Void, Article[]> {
+        private NewsApi newsApi;
+
+        public ApiTask(NewsApi newsApi) {
+            this.newsApi = newsApi;
+        }
+
+        @Override
+        protected Article[] doInBackground(Void... voids) {
+            return newsApi.getArticlesFromWeb();
+        }
     }
 }
