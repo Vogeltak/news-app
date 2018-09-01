@@ -44,13 +44,22 @@ public class ActivityArticle extends AppCompatActivity {
         // Retrieve all View objects for the elements of the article
         TextView sourceView = findViewById(R.id.articleSource);
         TextView titleView = findViewById(R.id.articleTitle);
-        TextView ageView = findViewById(R.id.articleAge);
+        TextView ertView = findViewById(R.id.articleERT);
         TextView textView = findViewById(R.id.articleText);
+
+        // Calculate the estimated reading time
+        int nWords = 0;
+
+        if (!article.getText().isEmpty()) {
+            nWords = article.getText().split("\\s+").length;
+        }
+
+        int estimatedReadingTimeInMinutes = (int) (nWords / 150);
 
         // Insert all relevant texts
         sourceView.setText(article.getSrc());
         titleView.setText(article.getTitle());
-        ageView.setText(String.valueOf(DateCalc.getAgeInHours(article.getDate())) + " hours ago");
+        ertView.setText(String.valueOf(estimatedReadingTimeInMinutes) + " minutes");
         textView.setText(article.getText());
     }
 
