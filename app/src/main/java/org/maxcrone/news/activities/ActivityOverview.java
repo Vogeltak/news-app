@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -82,21 +84,21 @@ public class ActivityOverview extends AppCompatActivity {
         //mRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
-    /* Called when the user taps an article */
-    public void openArticle(View view) {
-        Intent articleIntent = new Intent(this, ActivityArticle.class);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_overview, menu);
 
-        // Only use window transitions if Android version is sufficiently high
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            /*View titleView = findViewById(R.id.textView5);
-            View sourceView = findViewById(R.id.textView4);
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this,
-                    Pair.create(titleView, "articleTitle"),
-                    Pair.create(sourceView, "articleSource"));*/
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this);
-            startActivity(articleIntent, options.toBundle());
-        } else {
-            startActivity(articleIntent);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // Handle item selection
+        switch (menuItem.getItemId()) {
+            case R.id.appSettings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
         }
     }
 
