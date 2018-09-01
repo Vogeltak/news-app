@@ -1,7 +1,9 @@
 package org.maxcrone.news.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +12,18 @@ import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.maxcrone.news.R;
 import org.maxcrone.news.data.Article;
+import org.maxcrone.news.network.ImageTask;
 import org.maxcrone.news.util.TimeCalc;
 
-public class ActivityArticle extends AppCompatActivity {
+import java.net.URL;
+import java.net.URLConnection;
+
+public class ActivityArticle extends AppCompatActivity implements ImageTask.ImageResponse{
     private Article article;
     private ShareActionProvider mShareActionProvider;
 
@@ -47,7 +54,15 @@ public class ActivityArticle extends AppCompatActivity {
         TextView ertView = findViewById(R.id.articleERT);
         TextView textView = findViewById(R.id.articleText);
 
-        // Insert all relevant texts
+        // Retrieve article image
+        try {
+            new ImageTask(getCacheDir(), this)
+                    .execute(article.getImgUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert all relevant text
         sourceView.setText(article.getSrc());
         titleView.setText(article.getTitle());
         ertView.setText(TimeCalc.getEstimatedReadingTime(article.getText()) + " minutes");
@@ -98,5 +113,11 @@ public class ActivityArticle extends AppCompatActivity {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareintent);
         }
+    }
+
+    @Override
+    public void processImage(Bitmap result) {
+        ImageView imgView = findViewById(R.id.articleImg);
+        imgView.setImageBitmap(result);
     }
 }

@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/NewsToolbar"
-        android:elevation="0dp">
+        android:elevation="0dp"
+        android:layout_marginBottom="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/articleToolbar"
@@ -19,6 +20,7 @@
             android:layout_height="wrap_content"
             android:elevation="0dp"
             android:theme="@style/NewsToolbar"
+            android:layout_marginBottom="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap">
 
         </android.support.v7.widget.Toolbar>
@@ -34,58 +36,74 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/text_margin"
-            android:paddingRight="@dimen/text_margin">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/articleSource"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:layout_gravity="center"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/colorTextDisabled"
-                android:textSize="14sp"
-                android:transitionName="articleSource"
-                android:textIsSelectable="true"/>
-
-            <TextView
-                android:id="@+id/articleTitle"
+            <ImageView
+                android:id="@+id/articleImg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:layout_marginBottom="32dp"
-                android:textColor="@color/colorText"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:transitionName="articleTitle"
-                android:textIsSelectable="true"/>
+                android:layout_marginTop="0dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"/>
 
-            <TextView
-                android:id="@+id/articleERT"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:fontFamily="sans-serif"
-                android:layout_gravity="center"
-                android:textColor="@color/colorTextDisabled"
-                android:textSize="16sp"
-                android:textIsSelectable="true"/>
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/text_margin"
+                android:paddingRight="@dimen/text_margin">
 
-            <TextView
-                android:id="@+id/articleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:textColor="@color/colorText"
-                android:textSize="18sp"
-                android:lineSpacingExtra="4dp"
-                android:textIsSelectable="true"/>
+                <TextView
+                    android:id="@+id/articleSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/colorTextDisabled"
+                    android:textSize="14sp"
+                    android:transitionName="articleSource"
+                    android:textIsSelectable="true"/>
+
+                <TextView
+                    android:id="@+id/articleTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="32dp"
+                    android:textColor="@color/colorText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:transitionName="articleTitle"
+                    android:textIsSelectable="true"/>
+
+                <TextView
+                    android:id="@+id/articleERT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="sans-serif"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorTextDisabled"
+                    android:textSize="16sp"
+                    android:textIsSelectable="true"/>
+
+                <TextView
+                    android:id="@+id/articleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:textColor="@color/colorText"
+                    android:textSize="18sp"
+                    android:lineSpacingExtra="4dp"
+                    android:textIsSelectable="true"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

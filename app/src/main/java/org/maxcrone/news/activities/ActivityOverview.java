@@ -2,6 +2,7 @@ package org.maxcrone.news.activities;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,18 @@ public class ActivityOverview extends AppCompatActivity implements SwipeRefreshL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
+
+        /*
+         * Install application wide http cache
+         */
+        try {
+            File httpCacheDir = new File(getCacheDir(), "http");
+            long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
+            HttpResponseCache.install(httpCacheDir, httpCacheSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         /*
          * Set up the Toolbar
