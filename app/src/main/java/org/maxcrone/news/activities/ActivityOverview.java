@@ -6,6 +6,7 @@ import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -55,7 +56,6 @@ public class ActivityOverview extends AppCompatActivity implements SwipeRefreshL
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         /*
          * Set up the Toolbar
